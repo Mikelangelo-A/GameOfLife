@@ -3,6 +3,8 @@ public class Main {
         int[][] board = Board.random_state(10,10);
 //        System.out.println(Arrays.deepToString(board));
         Board.renderBoard(board);
+        int[][] newBoard = Board.nextBoardState(board);
+        Board.renderBoard(newBoard);
 
     }
 }

@@ -72,7 +72,37 @@ public class Board {
         }
     }
 
-//    public static int[][] nextBoardState(int[][] board){
-//
-//    }
+    public static int[][] nextBoardState(int[][] board){
+        int[][] newBoard = dead_state(board.length, board[0].length);
+        int height = board.length;
+        int width = board[0].length;
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                int neighbourCount = 0;
+                for(int x = -1; x < 2; x++){
+                    int currentx = i + x;
+                    for(int y = -1; y < 2; y++){
+                        int currenty = j + y;
+                        if(currentx > -1 && currentx <= (height - 1) && currenty > -1 && currenty <= (width - 1) && (currentx != i && currenty != j)){
+                            if(board[currentx][currenty] == 1){
+                                neighbourCount++;
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                if(board[i][j] == 1 && (neighbourCount == 0 || neighbourCount == 1)){
+                    newBoard[i][j] = 0;
+                } else if(board[i][j] == 1 && (neighbourCount == 2 || neighbourCount == 3)){
+                    continue;
+                } else if(board[i][j] == 1 && (neighbourCount > 3)){
+                    newBoard[i][j] = 0;
+                } else if(board[i][j] == 0 && neighbourCount == 3){
+                    newBoard[i][j] = 1;
+                }
+            }
+        }
+        return newBoard;
+    }
 }
