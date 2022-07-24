@@ -1,5 +1,6 @@
 import java.util.Arrays;
 
+//Creating class for unit testing
 class BoardTest {
 
     @org.junit.jupiter.api.Test
