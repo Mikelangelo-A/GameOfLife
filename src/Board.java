@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.util.Arrays;
 
 public class Board {
+// Method to generate a board with randomly generated alive and dead states(1 or 0)
     public static int[][] random_state(int height, int width){
         int[][] board = dead_state(height, width);
         for(int x = 0; x < height; x++){
@@ -15,6 +16,7 @@ public class Board {
         }
         return board;
     }
+//    Method to generate a board with all values set to 0(or dead) given a width and height for the board.
     public static int[][] dead_state(int height, int width){
         int[][] board = new int[height][width];
         for(int x = 0; x < height; x++){
@@ -24,7 +26,7 @@ public class Board {
         }
         return board;
     }
-
+//  Method to print out the board with a border around it.
     public static void renderBoard(int[][] board){
         boolean firstLine = false;
         boolean lastLine = false;
@@ -76,6 +78,12 @@ public class Board {
         }
     }
 
+//   Method to calculate the next board state, checking for neighbour count and using that
+//   to determine whether a certain cell should stay alive or dead.
+//   Any live cell with 0 or 1 live neighbors becomes dead, because of underpopulation
+//   Any live cell with 2 or 3 live neighbors stays alive, because its neighborhood is just right
+//   Any live cell with more than 3 live neighbors becomes dead, because of overpopulation
+//   Any dead cell with exactly 3 live neighbors becomes alive, by reproduction
     public static int[][] nextBoardState(int[][] board){
         int[][] newBoard = dead_state(board.length, board[0].length);
         int height = board.length;
@@ -110,6 +118,9 @@ public class Board {
         }
         return newBoard;
     }
+
+//  Method to run the simulation of the Game of Life, which also checks if the board stays exactly the same
+//  between iterations, in which case, the game ends.
     public static void runSimulation(int[][] board) throws Exception{
         int iterations = 1;
 //        Scanner scanner = new Scanner(System.in);
@@ -127,6 +138,9 @@ public class Board {
         }
 }
 
+//  Method used to load in a board from a text file, which contains 0's and 1's.
+//  this method could be improved upon, as it opens 2 readers, for the same file,
+//  but I couldn't get the mark() and reset() functions for BufferedReader to work properly.
     public static int[][] loadBoardFromTextFile(String directory) throws Exception{
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(directory));
