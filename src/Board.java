@@ -41,14 +41,14 @@ public class Board {
                 if(y == 0){
                     System.out.print("|");
                     if(board[x][y] == 1){
-                        System.out.print("*");
+                        System.out.print("#");
                     }else {
                         System.out.print(" ");
                     }
                 }
                 else if (y + 1 == board[x].length) {
                     if(board[x][y] == 1){
-                        System.out.print("*");
+                        System.out.print("#");
                     }else {
                         System.out.print(" ");
                     }
@@ -59,7 +59,7 @@ public class Board {
                 }
                 else {
                     if(board[x][y] == 1){
-                        System.out.print("*");
+                        System.out.print("#");
                     }else {
                         System.out.print(" ");
                     }
@@ -114,6 +114,7 @@ public class Board {
         int iterations = 1;
 //        Scanner scanner = new Scanner(System.in);
         while(true){
+            System.out.println("Current iteration: " + iterations);
             Board.renderBoard(board);
             int[][] prevBoard = board;
             board = Board.nextBoardState(board);
@@ -122,7 +123,6 @@ public class Board {
                 break;
             }
             Thread.sleep(500);
-            System.out.println("Current iteration: " + iterations);
             iterations++;
         }
 }
