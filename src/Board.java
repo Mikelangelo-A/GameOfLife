@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Arrays;
+
 public class Board {
     public static int[][] random_state(int height, int width){
         int[][] board = dead_state(height, width);
@@ -37,14 +41,14 @@ public class Board {
                 if(y == 0){
                     System.out.print("|");
                     if(board[x][y] == 1){
-                        System.out.print("#");
+                        System.out.print("*");
                     }else {
                         System.out.print(" ");
                     }
                 }
                 else if (y + 1 == board[x].length) {
                     if(board[x][y] == 1){
-                        System.out.print("#");
+                        System.out.print("*");
                     }else {
                         System.out.print(" ");
                     }
@@ -55,7 +59,7 @@ public class Board {
                 }
                 else {
                     if(board[x][y] == 1){
-                        System.out.print("#");
+                        System.out.print("*");
                     }else {
                         System.out.print(" ");
                     }
@@ -83,11 +87,12 @@ public class Board {
                     int currentx = i + x;
                     for(int y = -1; y < 2; y++){
                         int currenty = j + y;
-                        if(currentx > -1 && currentx <= (height - 1) && currenty > -1 && currenty <= (width - 1) && (currentx != i && currenty != j)){
+                        if(currentx == i && currenty == j){
+                            continue;
+                        }
+                        if(currentx > -1 && currentx <= (height - 1) && currenty > -1 && currenty <= (width - 1) ){
                             if(board[currentx][currenty] == 1){
                                 neighbourCount++;
-                            } else {
-                                continue;
                             }
                         }
                     }
@@ -95,7 +100,7 @@ public class Board {
                 if(board[i][j] == 1 && (neighbourCount == 0 || neighbourCount == 1)){
                     newBoard[i][j] = 0;
                 } else if(board[i][j] == 1 && (neighbourCount == 2 || neighbourCount == 3)){
-                    continue;
+                    newBoard[i][j] = 1;
                 } else if(board[i][j] == 1 && (neighbourCount > 3)){
                     newBoard[i][j] = 0;
                 } else if(board[i][j] == 0 && neighbourCount == 3){
@@ -104,5 +109,46 @@ public class Board {
             }
         }
         return newBoard;
+    }
+    public static void runSimulation(int[][] board) throws Exception{
+        int iterations = 1;
+//        Scanner scanner = new Scanner(System.in);
+        while(true){
+            Board.renderBoard(board);
+            int[][] prevBoard = board;
+            board = Board.nextBoardState(board);
+            if(Arrays.deepEquals(prevBoard,board)){
+                System.out.println("Loop ended at " + iterations + " iterations");
+                break;
+            }
+            Thread.sleep(500);
+            System.out.println("Current iteration: " + iterations);
+            iterations++;
+        }
+}
+
+    public static int[][] loadBoardFromTextFile(String directory) throws Exception{
+        BufferedReader reader = null;
+        reader = new BufferedReader(new FileReader(directory));
+        if(reader == null){
+            System.out.println("Error occured while trying to load the file.");
+            return null;
+        }
+        int lines = 1;
+        int lineLength = reader.readLine().length();
+        while(reader.readLine() != null){
+            lines++;
+        }
+        reader.close();
+        reader = new BufferedReader(new FileReader(directory));
+        int[][] board = new int[lines][lineLength];
+        for(int i = 0; i < lines; i++){
+            String input = reader.readLine();
+            for(int j = 0; j < lineLength; j++){
+                board[i][j] = (int) input.charAt(j) - 48;
+            }
+        }
+        reader.close();
+        return board;
     }
 }
